@@ -23,39 +23,45 @@ if($mysqli->connect_errno){
 		<li class="navItem"><a class="navlink" href="company.php">Company</a></li>
 		<li class="navItem"><a class="navlink"  href="ceo.php">CEO</a></li>
 		<li class="navItem"><a class="navlink"  href="industry.php">Industry</a></li>
-		<li class="navItem"><a class="navlink"  href="investors.php">Investor</a></li>
+		<li class="navItem"><a class="navlink"  href="investor.php">Investor</a></li>
 	</ul>
 
 
 <br>
 
+<div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h1> Company Database for your Investment References</h1>
+        <h3>Welcome Investors!</h3>
+      </div>
 
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="span6">
+          <h2>Market Interaction Overview</h2>
+          <p>If you want to find the right Company, your trusted CEO or your favorite industry. Take a look here!</p>
+          <p><a class="btn" href="overview.html">View details &raquo;</a></p>
+        </div>
+        <div class="span6">
+          <h2>Investor Portal</h2>
+          <p>If you are an investor, look up what companies are in your portfolio.</p>
+          <p><a class="btn" href="investor_portal.php">View details &raquo;</a></p>
+       </div>
+      </div>
 <h1>Final Project: Public Company Database</h1>
 <br>
 <br>
-<h3>About S&P 500</h3>
-
-<p>This website is a generic interface for a juniors' club volleybal database.
-  The database consits of coache, athletes and teams. There is a page to add and update
-  any of the main entities, and a page to add or update the positions of each. Please refer to the schema or ER diagram
-  to see what conects to what.
-</p>
-<ul>Some constraints!
-  <li>Team names must be unique</li>
-  <li>A coach's first and last name combination must be unique</li>
-</ul>
-<p>It is not a constraint that a player or coach can not be on two or more teams. This happens.
-  It is also not a database constraint on age groups and ages. There can be exceptions to this,
-  so we chose not to enforce it at that level</p>
 
 
 
 
-<h3>Volleyball ER Diagram</h3>
-<img src="ERdiagram.png" alt="See VBschema.png" style="width:400;height:400;">
+
+<h3>ER Diagram</h3>
+<img src="ERDiagram.png" alt="See VBschema.png" style="width:400;height:400;">
 <br>
-<h3>Volleyball Schema</h3>
-<img src="VBschema.png" alt="See VBschema.png" style="width:400;height:400;">
+<h3>Schema</h3>
+<img src="Schema.png" alt="See VBschema.png" style="width:400;height:400;">
 <br>
 
 
@@ -65,11 +71,11 @@ if($mysqli->connect_errno){
 			<th>First Name</th>
 			<th>Last Name</th>
 			<th>Age</th>
-      <th>Company</th>
+      		<th>Industry</th>
 		</tr>
 <?php
 // create the sql query
-if(!($stmt = $mysqli->prepare("SELECT fname,lname,age,ceoID FROM ceo"))){
+if(!($stmt = $mysqli->prepare("SELECT fname,lname,age,industryID FROM ceo"))){
 	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
 }
 // execute the sql query
@@ -77,21 +83,52 @@ if(!$stmt->execute()){
 	echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 // bind the results to variables
-if(!$stmt->bind_result($firstName, $lastName, $age)){
+if(!$stmt->bind_result($firstName, $lastName, $age, $industryID)){
 	echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
 }
 // operate for each returned row. Inline the html.
 while($stmt->fetch()){
- echo "<tr>\n<td>" . $firstName . "</td>\n<td>" . $lastName . "</td>\n<td>" . $age . "</td>\n<tr>\n";
+ echo "<tr>\n<td>" . $firstName . "</td>\n<td>" . $lastName . "</td>\n<td>" . $age . "</td>\n<td>" .$industryID . "</td>\n<tr>\n";
 }
 // close out the sql query.
 $stmt->close();
 ?>
 	</table>
 
+
+<table class="data_display">
+		<label>Industry </label>
+		<tr class="heading">
+			<th>Type</th>
+			<th>Size</th>
+			<th>Industry</th>
+		</tr>
+<?php
+// create the sql query
+if(!($stmt = $mysqli->prepare("SELECT type, size, industryID FROM industry"))){
+	echo "Prepare failed: "  . $stmt->errno . " " . $stmt->error;
+}
+// execute the sql query
+if(!$stmt->execute()){
+	echo "Execute failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+// bind the results to variables
+if(!$stmt->bind_result($type, $size, $industryID)){
+	echo "Bind failed: "  . $mysqli->connect_errno . " " . $mysqli->connect_error;
+}
+// operate for each returned row. Inline the html.
+while($stmt->fetch()){
+ echo "<tr>\n<td>" . $type . "</td>\n<td>" . $size . "</td>\n<td>" .$industryID . "</td>\n<tr>\n";
+}
+// close out the sql query.
+$stmt->close();
+?>
+	</table>
+
+
 <br>
-<footer> CS340_ Database Final Project Du Tram (c)</footer>
+<footer> CS340_ Database Final Project Du Tram ©</footer>
 <br>
 
 </body>
-</ht
+</html>
